@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Spotify Track Info</title>
+</head>
+<body>
+    <h1>Spotify Track Information</h1>
+    {% if track %}
+        <h2>{{ track.name }}</h2>
+        <p><strong>Artist(s):</strong>
+            {% for artist in track.artists %}
+                {{ artist.name }}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+        <p><strong>Album:</strong> {{ track.album.name }}</p>
+        <p><strong>Popularity:</strong> {{ track.popularity }}</p>
+        {% if track.preview_url %}
+            <p><strong>Preview:</strong></p>
+            <audio controls>
+                <source src="{{ track.preview_url }}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        {% endif %}
+    {% else %}
+        <p>Could not fetch track information. Please check your credentials and the track ID.</p>
+    {% endif %}
+</body>
+</html>
