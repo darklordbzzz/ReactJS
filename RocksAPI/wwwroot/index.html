@@ -3,84 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rocks API</title>
-    <style>
-        body { font-family: sans-serif; }
-        .container { display: flex; flex-wrap: wrap; }
-        .section { border: 1px solid #ccc; border-radius: 5px; margin: 10px; padding: 10px; width: 400px; }
-        .gallery { display: flex; flex-wrap: wrap; }
-        .gallery img { max-width: 100px; max-height: 100px; margin: 5px; }
-    </style>
+    <title>RocksDB Client</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <h1>Rocks API</h1>
-    <div class="container" id="data-container">
-        <!-- Data will be loaded here -->
-    </div>
+    <header>
+        <h1>RocksDB API Client</h1>
+        <nav>
+            <a href="#" onclick="showView('minerals-view')">Minerals</a>
+            <a href="#" onclick="showView('rocks-view')">Rocks</a>
+            <a href="#" onclick="showView('samples-view')">Samples</a>
+            <a href="#" onclick="showView('localities-view')">Localities</a>
+            <a href="#" onclick="showView('collectors-view')">Collectors</a>
+        </nav>
+    </header>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            loadData();
-        });
+    <main>
+        <!-- Mineral View -->
+        <div id="minerals-view" class="view">
+            <h2>Minerals</h2>
+            <div class="controls">
+                <input type="text" id="minerals-search" placeholder="Search Minerals...">
+                <button onclick="showForm('mineral-form')">Add New Mineral</button>
+            </div>
+            <div id="minerals-list" class="list-container"></div>
+            <div id="mineral-form" class="form-container" style="display:none;">
+                <!-- Mineral form will be injected here -->
+            </div>
+        </div>
 
-        async function loadData() {
-            const container = document.getElementById('data-container');
-            container.innerHTML = '';
+        <!-- Rock View -->
+        <div id="rocks-view" class="view" style="display:none;">
+            <h2>Rocks</h2>
+            <div class="controls">
+                <input type="text" id="rocks-search" placeholder="Search Rocks...">
+                <button onclick="showForm('rock-form')">Add New Rock</button>
+            </div>
+            <div id="rocks-list" class="list-container"></div>
+            <div id="rock-form" class="form-container" style="display:none;">
+                <!-- Rock form will be injected here -->
+            </div>
+        </div>
 
-            const response = await fetch('/api/rocks');
-            const data = await response.json();
+        <!-- Sample View -->
+        <div id="samples-view" class="view" style="display:none;">
+            <h2>Samples</h2>
+            <div class="controls">
+                <input type="text" id="samples-search" placeholder="Search Samples...">
+                <button onclick="showForm('sample-form')">Add New Sample</button>
+            </div>
+            <div id="samples-list" class="list-container"></div>
+            <div id="sample-form" class="form-container" style="display:none;">
+                <!-- Sample form will be injected here -->
+            </div>
+             <div id="sample-details" class="details-container" style="display:none;">
+                <!-- Sample details and gallery will be injected here -->
+            </div>
+        </div>
 
-            // For simplicity, we'll just display samples and their media for now.
-            // A full UI would have separate sections for each data type.
+        <!-- Locality View -->
+        <div id="localities-view" class="view" style="display:none;">
+            <h2>Localities</h2>
+             <div class="controls">
+                <input type="text" id="localities-search" placeholder="Search Localities...">
+                <button onclick="showForm('locality-form')">Add New Locality</button>
+            </div>
+            <div id="localities-list" class="list-container"></div>
+            <div id="locality-form" class="form-container" style="display:none;">
+                 <!-- Locality form will be injected here -->
+            </div>
+        </div>
 
-            const samples = data.samples;
-            if(samples){
-                const samplesSection = document.createElement('div');
-                samplesSection.className = 'section';
-                samplesSection.innerHTML = '<h2>Samples</h2>';
+        <!-- Collector View -->
+        <div id="collectors-view" class="view" style="display:none;">
+            <h2>Collectors</h2>
+             <div class="controls">
+                <input type="text" id="collectors-search" placeholder="Search Collectors...">
+                <button onclick="showForm('collector-form')">Add New Collector</button>
+            </div>
+            <div id="collectors-list" class="list-container"></div>
+            <div id="collector-form" class="form-container" style="display:none;">
+                <!-- Collector form will be injected here -->
+            </div>
+        </div>
+    </main>
 
-                samples.forEach(sample => {
-                    const sampleDiv = document.createElement('div');
-                    sampleDiv.innerHTML = `
-                        <h3>${sample.description}</h3>
-                        <p><strong>ID:</strong> ${sample.sampleId}</p>
-                        <h4>Media Gallery</h4>
-                        <div class="gallery" id="gallery-${sample.sampleId}">
-                            <!-- Media will be loaded here -->
-                        </div>
-                        <h4>Upload New Media</h4>
-                        <input type="file" id="file-${sample.sampleId}" />
-                        <button onclick="uploadMedia('${sample.sampleId}')">Upload</button>
-                    `;
-                    samplesSection.appendChild(sampleDiv);
-                });
-                container.appendChild(samplesSection);
-            }
-        }
-
-        async function uploadMedia(sampleId) {
-            const fileInput = document.getElementById(`file-${sampleId}`);
-            const file = fileInput.files[0];
-            if (!file) {
-                alert('Please select a file to upload.');
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append('file', file);
-
-            const response = await fetch(`/api/media/upload/${sampleId}`, {
-                method: 'POST',
-                body: formData
-            });
-
-            if (response.ok) {
-                alert('File uploaded successfully!');
-                // In a real app, you would refresh the gallery here.
-            } else {
-                alert('File upload failed.');
-            }
-        }
-    </script>
+    <script src="js/site.js"></script>
 </body>
 </html>
