@@ -1,0 +1,25 @@
+{
+  "Files": [
+    {
+      "Id": "/app/RocksAPI/wwwroot/index.html",
+      "PackagePath": "staticwebassets/index.html"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.RocksAPI.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.RocksAPI.props",
+      "PackagePath": "build\\RocksAPI.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.RocksAPI.props",
+      "PackagePath": "buildMultiTargeting\\RocksAPI.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.RocksAPI.props",
+      "PackagePath": "buildTransitive\\RocksAPI.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

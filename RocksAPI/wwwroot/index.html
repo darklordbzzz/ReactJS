@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rocks API</title>
+    <style>
+        body { font-family: sans-serif; }
+        .container { display: flex; flex-wrap: wrap; }
+        .section { border: 1px solid #ccc; border-radius: 5px; margin: 10px; padding: 10px; width: 400px; }
+        .gallery { display: flex; flex-wrap: wrap; }
+        .gallery img { max-width: 100px; max-height: 100px; margin: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Rocks API</h1>
+    <div class="container" id="data-container">
+        <!-- Data will be loaded here -->
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+        });
+
+        async function loadData() {
+            const container = document.getElementById('data-container');
+            container.innerHTML = '';
+
+            const response = await fetch('/api/rocks');
+            const data = await response.json();
+
+            // For simplicity, we'll just display samples and their media for now.
+            // A full UI would have separate sections for each data type.
+
+            const samples = data.samples;
+            if(samples){
+                const samplesSection = document.createElement('div');
+                samplesSection.className = 'section';
+                samplesSection.innerHTML = '<h2>Samples</h2>';
+
+                samples.forEach(sample => {
+                    const sampleDiv = document.createElement('div');
+                    sampleDiv.innerHTML = `
+                        <h3>${sample.description}</h3>
+                        <p><strong>ID:</strong> ${sample.sampleId}</p>
+                        <h4>Media Gallery</h4>
+                        <div class="gallery" id="gallery-${sample.sampleId}">
+                            <!-- Media will be loaded here -->
+                        </div>
+                        <h4>Upload New Media</h4>
+                        <input type="file" id="file-${sample.sampleId}" />
+                        <button onclick="uploadMedia('${sample.sampleId}')">Upload</button>
+                    `;
+                    samplesSection.appendChild(sampleDiv);
+                });
+                container.appendChild(samplesSection);
+            }
+        }
+
+        async function uploadMedia(sampleId) {
+            const fileInput = document.getElementById(`file-${sampleId}`);
+            const file = fileInput.files[0];
+            if (!file) {
+                alert('Please select a file to upload.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const response = await fetch(`/api/media/upload/${sampleId}`, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                alert('File uploaded successfully!');
+                // In a real app, you would refresh the gallery here.
+            } else {
+                alert('File upload failed.');
+            }
+        }
+    </script>
+</body>
+</html>

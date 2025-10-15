@@ -1,0 +1,6 @@
+@RocksAPI_HostAddress = http://localhost:5078
+
+GET {{RocksAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
