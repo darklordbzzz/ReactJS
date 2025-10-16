@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RocksDB Client</title>
+    <title>Rockhound UI</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <header>
-        <h1>RocksDB API Client</h1>
+        <h1>Rockhound UI</h1>
         <nav>
             <a href="#" onclick="showView('minerals-view')">Minerals</a>
             <a href="#" onclick="showView('rocks-view')">Rocks</a>
@@ -24,7 +24,7 @@
             <h2>Minerals</h2>
             <div class="controls">
                 <input type="text" id="minerals-search" placeholder="Search Minerals...">
-                <button onclick="showForm('mineral-form')">Add New Mineral</button>
+                <button onclick="generateForm('minerals')">Add New Mineral</button>
             </div>
             <div id="minerals-list" class="list-container"></div>
             <div id="mineral-form" class="form-container" style="display:none;">
@@ -37,7 +37,7 @@
             <h2>Rocks</h2>
             <div class="controls">
                 <input type="text" id="rocks-search" placeholder="Search Rocks...">
-                <button onclick="showForm('rock-form')">Add New Rock</button>
+                <button onclick="generateForm('rocks')">Add New Rock</button>
             </div>
             <div id="rocks-list" class="list-container"></div>
             <div id="rock-form" class="form-container" style="display:none;">
@@ -50,7 +50,7 @@
             <h2>Samples</h2>
             <div class="controls">
                 <input type="text" id="samples-search" placeholder="Search Samples...">
-                <button onclick="showForm('sample-form')">Add New Sample</button>
+                <button onclick="generateForm('samples')">Add New Sample</button>
             </div>
             <div id="samples-list" class="list-container"></div>
             <div id="sample-form" class="form-container" style="display:none;">
@@ -66,7 +66,7 @@
             <h2>Localities</h2>
              <div class="controls">
                 <input type="text" id="localities-search" placeholder="Search Localities...">
-                <button onclick="showForm('locality-form')">Add New Locality</button>
+                <button onclick="generateForm('localities')">Add New Locality</button>
             </div>
             <div id="localities-list" class="list-container"></div>
             <div id="locality-form" class="form-container" style="display:none;">
@@ -79,7 +79,7 @@
             <h2>Collectors</h2>
              <div class="controls">
                 <input type="text" id="collectors-search" placeholder="Search Collectors...">
-                <button onclick="showForm('collector-form')">Add New Collector</button>
+                <button onclick="generateForm('collectors')">Add New Collector</button>
             </div>
             <div id="collectors-list" class="list-container"></div>
             <div id="collector-form" class="form-container" style="display:none;">

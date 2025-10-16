@@ -58,38 +58,103 @@ async function loadData(type) {
 // Placeholder functions for edit/delete - to be implemented
 async function editItem(type, id) {
     if (type === 'samples') {
-        try {
-            const response = await fetch(`/api/samples/${id}`);
-            const sample = await response.json();
-            const detailsContainer = document.getElementById('sample-details');
+        const response = await fetch(`/api/samples/${id}`);
+        const sample = await response.json();
+        const detailsContainer = document.getElementById('sample-details');
 
-            let photosHtml = '';
-            if (sample.photos && sample.photos.length > 0) {
-                sample.photos.forEach(photo => {
-                    photosHtml += `<img src="${photo.url}" alt="${photo.caption}" title="${photo.caption}">`;
-                });
-            }
-
-            detailsContainer.innerHTML = `
-                <h3>Details for ${sample.description}</h3>
-                <p><strong>ID:</strong> ${sample.sampleId}</p>
-                <div class="gallery">${photosHtml}</div>
-                <h4>Upload New Media</h4>
-                <input type="file" id="file-${sample.sampleId}" />
-                <button onclick="uploadMedia('${sample.sampleId}')">Upload</button>
-                <button onclick="closeDetails()">Close</button>
-            `;
-            detailsContainer.style.display = 'block';
-        } catch (error) {
-            console.error('Error loading sample details:', error);
+        let photosHtml = '';
+        if (sample.photos && sample.photos.length > 0) {
+            sample.photos.forEach(photo => {
+                photosHtml += `<img src="${photo.url}" alt="${photo.caption}" title="${photo.caption}">`;
+            });
         }
+
+        detailsContainer.innerHTML = `
+            <h3>Details for ${sample.description}</h3>
+            <p><strong>ID:</strong> ${sample.sampleId}</p>
+            <div class="gallery">${photosHtml}</div>
+            <h4>Upload New Media</h4>
+            <input type="file" id="file-${sample.sampleId}" />
+            <button onclick="uploadMedia('${sample.sampleId}')">Upload</button>
+            <button onclick="closeDetails()">Close</button>
+        `;
+        detailsContainer.style.display = 'block';
     } else {
-        alert(`Editing ${type} with ID: ${id}`);
+        const response = await fetch(`/api/${type}/${id}`);
+        const item = await response.json();
+        generateForm(type, item);
+        showForm(`${type}-form`);
+    }
+}
+
+async function submitForm(type, id) {
+    const form = document.getElementById(`${type}-form`);
+    const inputs = form.querySelectorAll('input');
+    const item = {};
+    inputs.forEach(input => {
+        const prop = input.id.split('-')[1];
+        item[prop] = input.value;
+    });
+
+    const url = id ? `/api/${type}/${id}` : `/api/${type}`;
+    const method = id ? 'PUT' : 'POST';
+
+    try {
+        const response = await fetch(url, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(item)
+        });
+
+        if (response.ok) {
+            alert(`${type} saved successfully.`);
+            hideForm(`${type}-form`);
+            loadData(type);
+        } else {
+            alert(`Error saving ${type}.`);
+        }
+    } catch (error) {
+        console.error(`Error saving ${type}:`, error);
     }
 }
 
 function closeDetails() {
     document.getElementById('sample-details').style.display = 'none';
+}
+
+function generateForm(type, item = {}) {
+    const formContainer = document.getElementById(`${type}-form`);
+    let formHtml = `<h3>${item.id ? 'Edit' : 'Add'} ${type}</h3>`;
+
+    // A more robust solution would use a schema or reflection
+    const properties = Object.keys(item);
+    if (properties.length === 0) {
+        // A simple fallback for new items
+        switch(type) {
+            case 'minerals': properties.push('name', 'formula', 'variety', 'notes'); break;
+            case 'rocks': properties.push('name', 'type', 'subType', 'texture', 'origin', 'notes'); break;
+            // Add other types as needed
+        }
+    }
+
+    properties.forEach(prop => {
+        if (prop !== 'id' && typeof item[prop] !== 'object') {
+            formHtml += `
+                <div>
+                    <label for="${type}-${prop}">${prop}</label>
+                    <input type="text" id="${type}-${prop}" value="${item[prop] || ''}">
+                </div>
+            `;
+        }
+    });
+
+    formHtml += `
+        <button onclick="submitForm('${type}', '${item.id || ''}')">Submit</button>
+        <button onclick="hideForm('${type}-form')">Cancel</button>
+    `;
+    formContainer.innerHTML = formHtml;
 }
 
 async function deleteItem(type, id) {

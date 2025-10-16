@@ -71,11 +71,7 @@ namespace RocksAPI.Data
                         DimensionsCm = new Dimensions { Length = 15, Width = 10, Height = 7 },
                         PricePaid = new Price { Amount = 120.00, Currency = "USD" },
                         Source = "Local mineral show, vendor: 'Gemstone Galore'",
-                        Photos = new List<Photo>
-                        {
-                            new Photo { Url = "https://example.com/photos/sample001_1.jpg", Caption = "Overall view" },
-                            new Photo { Url = "https://example.com/photos/sample001_2.jpg", Caption = "Close-up of crystals" }
-                        },
+                        Photos = new List<Photo>(),
                         Tags = new List<string> { "geode", "amethyst", "quartz", "display piece" },
                         Notes = "Great luster, minor damage on one edge."
                     },
@@ -93,11 +89,7 @@ namespace RocksAPI.Data
                         DimensionsCm = new Dimensions { Length = 30, Width = 20, Height = 2 },
                         PricePaid = new Price { Amount = 45.00, Currency = "USD" },
                         Source = "Online retailer: 'Rock Solid'",
-                        Photos = new List<Photo>
-                        {
-                            new Photo { Url = "https://example.com/photos/sample002_1.jpg", Caption = "Top view" },
-                            new Photo { Url = "https://example.com/photos/sample002_2.jpg", Caption = "Side view, showing polish" }
-                        },
+                        Photos = new List<Photo>(),
                         Tags = new List<string> { "granite", "polished", "igneous" },
                         Notes = "Purchased for educational display."
                     }
