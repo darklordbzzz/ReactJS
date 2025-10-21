@@ -88,13 +88,25 @@ async function editItem(type, id) {
 }
 
 async function submitForm(type, id) {
-    const form = document.getElementById(`${type}-form`);
-    const inputs = form.querySelectorAll('input');
     const item = {};
-    inputs.forEach(input => {
-        const prop = input.id.split('-')[1];
-        item[prop] = input.value;
-    });
+    if (type === 'localities') {
+        item.name = document.getElementById('locality-name').value;
+        item.country = document.getElementById('locality-country').value;
+        item.stateProvince = document.getElementById('locality-stateProvince').value;
+        item.region = document.getElementById('locality-region').value;
+        item.latitude = parseFloat(document.getElementById('locality-latitude').value) || 0;
+        item.longitude = parseFloat(document.getElementById('locality-longitude').value) || 0;
+        item.mindatUrl = document.getElementById('locality-mindatUrl').value;
+        item.notes = document.getElementById('locality-notes').value;
+    } else {
+        // Generic fallback
+        const form = document.getElementById(`${type}-form`);
+        const inputs = form.querySelectorAll('input, textarea');
+        inputs.forEach(input => {
+            const prop = input.id.split('-')[1];
+            item[prop] = input.value;
+        });
+    }
 
     const url = id ? `/api/${type}/${id}` : `/api/${type}`;
     const method = id ? 'PUT' : 'POST';
@@ -126,35 +138,35 @@ function closeDetails() {
 
 function generateForm(type, item = {}) {
     const formContainer = document.getElementById(`${type}-form`);
-    let formHtml = `<h3>${item.id ? 'Edit' : 'Add'} ${type}</h3>`;
+    let formHtml = `<h3>${item.localityId ? 'Edit' : 'Add'} Locality</h3>`;
 
-    // A more robust solution would use a schema or reflection
-    const properties = Object.keys(item);
-    if (properties.length === 0) {
-        // A simple fallback for new items
-        switch(type) {
-            case 'minerals': properties.push('name', 'formula', 'variety', 'notes'); break;
-            case 'rocks': properties.push('name', 'type', 'subType', 'texture', 'origin', 'notes'); break;
-            // Add other types as needed
-        }
+    if (type === 'localities') {
+        formHtml += `
+            <div><label>Name:</label><input type="text" id="locality-name" value="${item.name || ''}" placeholder="e.g., Skardu"></div>
+            <div><label>Country:</label><input type="text" id="locality-country" value="${item.country || ''}" placeholder="e.g., Pakistan"></div>
+            <div><label>State/Province:</label><input type="text" id="locality-stateProvince" value="${item.stateProvince || ''}"></div>
+            <div><label>Region:</label><input type="text" id="locality-region" value="${item.region || ''}"></div>
+            <div><label>Latitude:</label><input type="number" id="locality-latitude" value="${item.latitude || ''}"></div>
+            <div><label>Longitude:</label><input type="number" id="locality-longitude" value="${item.longitude || ''}"></div>
+            <div><label>Mindat URL:</label><input type="text" id="locality-mindatUrl" value="${item.mindatUrl || ''}"></div>
+            <div><label>Notes:</label><textarea id="locality-notes">${item.notes || ''}</textarea></div>
+        `;
+    } else {
+        // Fallback for other types (can be specialized too)
+        const properties = Object.keys(item).length ? Object.keys(item) : ['name', 'notes']; // Simple default
+        properties.forEach(prop => {
+            if (prop !== 'id' && prop !== 'localityId' && typeof item[prop] !== 'object') {
+                formHtml += `<div><label>${prop}:</label><input type="text" id="${type}-${prop}" value="${item[prop] || ''}"></div>`;
+            }
+        });
     }
 
-    properties.forEach(prop => {
-        if (prop !== 'id' && typeof item[prop] !== 'object') {
-            formHtml += `
-                <div>
-                    <label for="${type}-${prop}">${prop}</label>
-                    <input type="text" id="${type}-${prop}" value="${item[prop] || ''}">
-                </div>
-            `;
-        }
-    });
-
     formHtml += `
-        <button onclick="submitForm('${type}', '${item.id || ''}')">Submit</button>
+        <button onclick="submitForm('${type}', '${item.localityId || item.id || ''}')">Submit</button>
         <button onclick="hideForm('${type}-form')">Cancel</button>
     `;
     formContainer.innerHTML = formHtml;
+    showForm(`${type}-form`);
 }
 
 async function deleteItem(type, id) {
