@@ -55,14 +55,14 @@ namespace RocksAPI.Controllers
                 return NotFound();
             }
 
-            locality.Name = updatedLocality.Name;
-            locality.Country = updatedLocality.Country;
-            locality.StateProvince = updatedLocality.StateProvince;
-            locality.Region = updatedLocality.Region;
-            locality.Latitude = updatedLocality.Latitude;
-            locality.Longitude = updatedLocality.Longitude;
-            locality.MindatUrl = updatedLocality.MindatUrl;
-            locality.Notes = updatedLocality.Notes;
+            locality.Name = updatedLocality.Name ?? locality.Name;
+            locality.Country = updatedLocality.Country ?? locality.Country;
+            locality.StateProvince = updatedLocality.StateProvince ?? locality.StateProvince;
+            locality.Region = updatedLocality.Region ?? locality.Region;
+            locality.Latitude = updatedLocality.Latitude != 0 ? updatedLocality.Latitude : locality.Latitude;
+            locality.Longitude = updatedLocality.Longitude != 0 ? updatedLocality.Longitude : locality.Longitude;
+            locality.MindatUrl = updatedLocality.MindatUrl ?? locality.MindatUrl;
+            locality.Notes = updatedLocality.Notes ?? locality.Notes;
 
             return NoContent();
         }

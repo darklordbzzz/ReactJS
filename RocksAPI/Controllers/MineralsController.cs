@@ -55,15 +55,15 @@ namespace RocksAPI.Controllers
                 return NotFound();
             }
 
-            mineral.Name = updatedMineral.Name;
-            mineral.Formula = updatedMineral.Formula;
-            mineral.Variety = updatedMineral.Variety;
-            mineral.Crystallography = updatedMineral.Crystallography;
-            mineral.PhysicalProperties = updatedMineral.PhysicalProperties;
-            mineral.OpticalProperties = updatedMineral.OpticalProperties;
-            mineral.OriginOccurrence = updatedMineral.OriginOccurrence;
-            mineral.MindatUrl = updatedMineral.MindatUrl;
-            mineral.Notes = updatedMineral.Notes;
+            mineral.Name = updatedMineral.Name ?? mineral.Name;
+            mineral.Formula = updatedMineral.Formula ?? mineral.Formula;
+            mineral.Variety = updatedMineral.Variety ?? mineral.Variety;
+            mineral.Crystallography = updatedMineral.Crystallography ?? mineral.Crystallography;
+            mineral.PhysicalProperties = updatedMineral.PhysicalProperties ?? mineral.PhysicalProperties;
+            mineral.OpticalProperties = updatedMineral.OpticalProperties ?? mineral.OpticalProperties;
+            mineral.OriginOccurrence = updatedMineral.OriginOccurrence ?? mineral.OriginOccurrence;
+            mineral.MindatUrl = updatedMineral.MindatUrl ?? mineral.MindatUrl;
+            mineral.Notes = updatedMineral.Notes ?? mineral.Notes;
 
             return NoContent();
         }

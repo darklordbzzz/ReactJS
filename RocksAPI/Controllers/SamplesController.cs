@@ -55,20 +55,20 @@ namespace RocksAPI.Controllers
                 return NotFound();
             }
 
-            sample.CollectorId = updatedSample.CollectorId;
-            sample.DateAcquired = updatedSample.DateAcquired;
-            sample.ItemType = updatedSample.ItemType;
-            sample.MineralId = updatedSample.MineralId;
-            sample.RockId = updatedSample.RockId;
-            sample.LocalityId = updatedSample.LocalityId;
-            sample.Description = updatedSample.Description;
-            sample.WeightGrams = updatedSample.WeightGrams;
-            sample.DimensionsCm = updatedSample.DimensionsCm;
-            sample.PricePaid = updatedSample.PricePaid;
-            sample.Source = updatedSample.Source;
-            sample.Photos = updatedSample.Photos;
-            sample.Tags = updatedSample.Tags;
-            sample.Notes = updatedSample.Notes;
+            sample.CollectorId = updatedSample.CollectorId ?? sample.CollectorId;
+            sample.DateAcquired = updatedSample.DateAcquired ?? sample.DateAcquired;
+            sample.ItemType = updatedSample.ItemType ?? sample.ItemType;
+            sample.MineralId = updatedSample.MineralId ?? sample.MineralId;
+            sample.RockId = updatedSample.RockId ?? sample.RockId;
+            sample.LocalityId = updatedSample.LocalityId ?? sample.LocalityId;
+            sample.Description = updatedSample.Description ?? sample.Description;
+            sample.WeightGrams = updatedSample.WeightGrams != 0 ? updatedSample.WeightGrams : sample.WeightGrams;
+            sample.DimensionsCm = updatedSample.DimensionsCm ?? sample.DimensionsCm;
+            sample.PricePaid = updatedSample.PricePaid ?? sample.PricePaid;
+            sample.Source = updatedSample.Source ?? sample.Source;
+            sample.Photos = updatedSample.Photos ?? sample.Photos;
+            sample.Tags = updatedSample.Tags ?? sample.Tags;
+            sample.Notes = updatedSample.Notes ?? sample.Notes;
 
             return NoContent();
         }

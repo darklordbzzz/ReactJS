@@ -55,13 +55,13 @@ namespace RocksAPI.Controllers
                 return NotFound();
             }
 
-            rock.Name = updatedRock.Name;
-            rock.Type = updatedRock.Type;
-            rock.SubType = updatedRock.SubType;
-            rock.Texture = updatedRock.Texture;
-            rock.MineralComposition = updatedRock.MineralComposition;
-            rock.Origin = updatedRock.Origin;
-            rock.Notes = updatedRock.Notes;
+            rock.Name = updatedRock.Name ?? rock.Name;
+            rock.Type = updatedRock.Type ?? rock.Type;
+            rock.SubType = updatedRock.SubType ?? rock.SubType;
+            rock.Texture = updatedRock.Texture ?? rock.Texture;
+            rock.MineralComposition = updatedRock.MineralComposition ?? rock.MineralComposition;
+            rock.Origin = updatedRock.Origin ?? rock.Origin;
+            rock.Notes = updatedRock.Notes ?? rock.Notes;
 
             return NoContent();
         }

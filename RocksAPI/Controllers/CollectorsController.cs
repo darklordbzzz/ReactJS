@@ -55,11 +55,11 @@ namespace RocksAPI.Controllers
                 return NotFound();
             }
 
-            collector.Name = updatedCollector.Name;
-            collector.Email = updatedCollector.Email;
-            collector.MemberSince = updatedCollector.MemberSince;
-            collector.PreferredCollectionTypes = updatedCollector.PreferredCollectionTypes;
-            collector.Notes = updatedCollector.Notes;
+            collector.Name = updatedCollector.Name ?? collector.Name;
+            collector.Email = updatedCollector.Email ?? collector.Email;
+            collector.MemberSince = updatedCollector.MemberSince ?? collector.MemberSince;
+            collector.PreferredCollectionTypes = updatedCollector.PreferredCollectionTypes ?? collector.PreferredCollectionTypes;
+            collector.Notes = updatedCollector.Notes ?? collector.Notes;
 
             return NoContent();
         }
